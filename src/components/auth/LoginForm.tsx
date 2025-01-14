@@ -4,7 +4,12 @@ import React from 'react';
 import {useFormik} from "formik";
 import * as Yup from 'yup';
 import axiosInstance from "../../utils/axiosInstance";
+import { signSuccess } from "../../redux/slice/auth"
+import { useRouter } from "next/navigation";
+import {useDispatch} from "react-redux";
+
 function LoginForm(props) {
+    const dispatch = useDispatch();
 
     const validationSchema = Yup.object({
         email: Yup.string()
@@ -19,8 +24,8 @@ function LoginForm(props) {
     // Formik setup with validation schema
     const formik = useFormik({
         initialValues: {
-            email: '',
-            password: '',
+            email: 'parthsingh1910@gmail.com',
+            password: '123456',
         },
         validationSchema, // Use the validation schema here
         onSubmit: async (values) => {
@@ -33,6 +38,8 @@ function LoginForm(props) {
                     // Store the token in localStorage
                     console.log("response?.data?.token", response?.data?.token);
                     localStorage.setItem('authToken', response?.data?.token);
+                    dispatch(signSuccess());
+                    router.replace('/');
                 }
             } catch (error) {
                 console.error('Error during login:', error);
