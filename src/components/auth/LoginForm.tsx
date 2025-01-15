@@ -10,6 +10,7 @@ import {useDispatch} from "react-redux";
 
 function LoginForm(props) {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const validationSchema = Yup.object({
         email: Yup.string()
@@ -30,14 +31,16 @@ function LoginForm(props) {
         validationSchema, // Use the validation schema here
         onSubmit: async (values) => {
             try {
-                const response = await axiosInstance.post('auth/login', values);
+                const response = await axiosInstance.post('auth/admin/login', values);
                 console.log("RESPONSE", response?.data);
 
                 // Check if the response contains the token
                 if (response?.data?.token) {
                     // Store the token in localStorage
                     console.log("response?.data?.token", response?.data?.token);
-                    localStorage.setItem('authToken', response?.data?.token);
+                    if (typeof window !== 'undefined') {
+                        localStorage.setItem('authToken', response?.data?.token);
+                    }
                     dispatch(signSuccess());
                     router.replace('/');
                 }

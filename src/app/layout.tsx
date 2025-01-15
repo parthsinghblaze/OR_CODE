@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
 import ReduxProvider from "../redux/ReduxProvider";
 import {useSelector} from "react-redux";
-import PrivateRoute from "../components/PrivateRoute";
+import AuthProvider from "../components/AuthProvider";
 
 export default function RootLayout({
   children,
@@ -25,7 +25,7 @@ export default function RootLayout({
         <html lang="en">
         <body suppressHydrationWarning={true}>
         <ReduxProvider>
-            <PrivateRoute children={children} />
+            <AuthProvider children={children} />
         </ReduxProvider>
         </body>
         </html>
