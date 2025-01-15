@@ -26,8 +26,14 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     (error) => {
+        console.log("error", error.config.url)
         // Handle errors globally, e.g., logging out on 401
         if (error.response && error.response.status === 401) {
+            if(error.response.data.message === 'INVALID TOKEN') {
+                if(error.config.url !== 'auth/validate-admin') {
+                    window.location.href = '/auth/signin'
+                }
+            }
             // Handle unauthorized access, like redirect to login page
         }
         return Promise.reject(error);

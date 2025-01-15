@@ -15,8 +15,11 @@ const authSlice = createSlice({
         signSuccess: (state) => {
             state.isLogin = true;
         },
-        logout: (state) => {
+        logout: (state, action) => {
+            const { router } = action.payload
+            localStorage.removeItem('authToken')
             state.isLogin = false;
+            router.replace('/auth/signin')
         },
     },
     extraReducers: (builder) => {

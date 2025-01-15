@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, {useState} from 'react';
 import {useFormik} from "formik";
 import * as Yup from 'yup';
 import axiosInstance from "../../utils/axiosInstance";
@@ -50,11 +50,13 @@ function LoginForm(props) {
         },
     });
 
+    const { isSubmitting } = formik
+
     return (
         <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <span className="mb-1.5 block font-medium">Please login</span>
             <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                QR Details
+                QR MANAGER
             </h2>
 
             <form onSubmit={formik.handleSubmit}>
@@ -137,8 +139,13 @@ function LoginForm(props) {
                 <div className="mb-5">
                     <input
                         type="submit"
-                        value="Sign In"
-                        className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                        value={isSubmitting ? "Signing In..." : "Sign In"}
+                        className={`w-full cursor-pointer rounded-lg border border-primary p-4 text-white transition ${
+                            isSubmitting
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-primary hover:bg-opacity-90"
+                        }`}
+                        disabled={isSubmitting}
                     />
                 </div>
             </form>

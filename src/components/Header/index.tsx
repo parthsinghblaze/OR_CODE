@@ -4,11 +4,23 @@ import DropdownMessage from "./DropdownMessage";
 import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
+import Button from "../common/Button";
+import React from "react";
+import {useRouter} from "next/navigation";
+import {useDispatch} from "react-redux";
+import {logout} from "../../redux/slice/auth";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  function handleLogout() {
+    dispatch(logout({ router }))
+  }
+
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
@@ -107,6 +119,15 @@ const Header = (props: {
             {/* <!-- Dark Mode Toggler --> */}
             <div className={"hidden"}>
               <DarkModeSwitcher />
+            </div>
+            <div>
+              <button
+                  className="flex justify-center rounded rounded-lg border border-stroke bg-danger text-white px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                  onClick={() => handleLogout()}
+
+              >
+                Logout
+              </button>
             </div>
             {/* <!-- Dark Mode Toggler --> */}
 
