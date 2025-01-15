@@ -32,7 +32,7 @@ function UserItem({ item = {}, index }) {
                 <p className="text-black dark:text-white">{index + 1}</p>
             </div>
             <div className="flex items-center justify-center p-2.5 xl:p-5">
-                <Link href={'/'} className={"text-black underline dark:text-white"}>
+                <Link href={`/users/${item._id}`} className={"text-black underline dark:text-white"}>
                     {item.name}
                 </Link>
             </div>

@@ -30,7 +30,6 @@ function AuthProvider({ children }) {
             const data = await axiosInstance.post("auth/validate-admin");
             if(data) {
                 dispatch(signSuccess());
-                router.push('/')
             }
         } catch (e) {
             router.push('/auth/signin')

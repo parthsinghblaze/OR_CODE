@@ -13,6 +13,8 @@ interface UserState {
     users: User[];
     loading: boolean;
     error: string | null;
+    userDetails: any;
+    userDetailsLoading: boolean
 }
 
 // Initial State
@@ -20,6 +22,8 @@ const initialState: UserState = {
     users: [],
     loading: false,
     error: null,
+    userDetails: {},
+    userDetailsLoading: false
 };
 
 // Async Thunk for Fetching Users
@@ -28,6 +32,19 @@ export const fetchUsers = createAsyncThunk<User[], void, { rejectValue: string }
     async (_, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.get("user/users");
+            return response.data; // Assuming response.data is an array of users
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data?.message || "Failed to fetch users");
+        }
+    }
+);
+
+
+export const fetchUserDetails = createAsyncThunk<User[], void, { rejectValue: string }>(
+    "user/fetchUserDetails",
+    async ({ userId }: any, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get(`user/${userId}`);
             return response.data; // Assuming response.data is an array of users
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.message || "Failed to fetch users");
@@ -58,7 +75,18 @@ const userSlice = createSlice({
             .addCase(fetchUsers.rejected, (state: UserState, action: PayloadAction<string | undefined>) => {
                 state.loading = false;
                 state.error = action.payload || "Failed to fetch users";
-            });
+            })
+            .addCase(fetchUserDetails.pending, (state: any, action: any) => {
+                state.userDetailsLoading = true
+            })
+            .addCase(fetchUserDetails.fulfilled, (state: any, action: any) => {
+                const { data } = action.payload
+                state.userDetails = data
+                state.userDetailsLoading = false
+            })
+            .addCase(fetchUserDetails.rejected, (state: any, action: any) => {
+                state.userDetailsLoading = false
+            })
     },
 });
 
